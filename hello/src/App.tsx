@@ -97,6 +97,8 @@ interface TrackProps {
 }
 
 
+
+
 function Track(props: TrackProps) {
   return (
     <tr>
@@ -108,6 +110,7 @@ function Track(props: TrackProps) {
 }
 
 interface AlbumProps {
+  id:number;
   coverUrl: string;
   title: string;
   band: string;
@@ -115,6 +118,17 @@ interface AlbumProps {
   releaseYear: number;
   children: React.ReactNode;
 }
+
+const AlbumTab:AlbumProps[]=[
+  {
+    id: 1,
+    coverUrl: "s",
+    title: "i",
+    band:"s",
+    genre:"s",
+    releaseYear: 1234
+  },
+]
 
 function Album(props: AlbumProps) {
   return (
