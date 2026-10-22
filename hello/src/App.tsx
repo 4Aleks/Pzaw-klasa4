@@ -37,15 +37,15 @@ const MovieTab:MovieProps[]=[
 
 function Movie(props: MovieProps) {
   return (
-    <div>
-      <img style={{ height: 375 }} src={props.posterUrl} />
-      <h2>{props.title}</h2>
-      <span>{props.releaseYear}</span>
-      <br></br>
-      <span>rating:{props.rating}</span>
-      {props.rating >= 8 &&(
-        <span>Polecany</span>
-      )}
+    <div className="card">
+      <img src={props.posterUrl} className="cardImg" alt={props.title} style={{ height: 375 }} />
+      <div className="card-body">
+        <h5 className="card">{props.title}</h5>
+        <p className="card">Rok: {props.releaseYear}</p>
+        <p className="card">
+           Ocena: {props.rating} {props.rating >= 8 && <span className="polecany">Polecany</span>}
+        </p>
+      </div>
     </div>
   );
 }
@@ -91,16 +91,15 @@ const BookTab:BookProps[]=[
 
 function Book(props: BookProps) {
   return (
-    <div>
-      <img style={{ height: 375 }} src={props.coverUrl} />
-      <h2>{props.title}</h2>
-      <span>{props.releaseYear} </span>
-      &bull;
-      <span> {props.numPages ?? 0} stron</span>
-      <br></br>
-      {props.releaseYear < 2000 &&(
-        <span>klasyka</span>
-      )}
+    <div className="card">
+     <img src={props.coverUrl} className="cardImg" alt={props.title} style={{ height: 375 }}/>
+      <div className="card-body">
+      <h5 className="card">{props.title}</h5>
+        <p className="card">
+           {props.releaseYear} &bull; {props.numPages ?? 0} stron
+           {props.releaseYear < 2000 && <span className="klasyk">klasyka</span>}
+        </p>
+      </div>
     </div>
   );
 }
@@ -217,30 +216,34 @@ const AlbumTab: AlbumProps[] = [
 ];
 
 function Album(props: AlbumProps) {
-  
   return (
-    <div>
-      <img style={{ height: 375 }} src={props.coverUrl} />
-      <h2>{props.title}</h2>
-      <span>{props.band} </span> &bull;
-      <span>{props.releaseYear} </span> &bull;
-      <span>{props.genre}</span>
-      <br></br>
-      {props.tracks.length == 0 &&(
-        <span>BRAK UTWOROW</span>
-      )}
-      <table style={{ width: "100%" }}>
-        <thead>
-          <th>L.p.</th>
-          <th>Tytuł</th>
-          <th>Czas trwania</th>
-        </thead>
-        <tbody>{props.tracks.map((track) => (
-                  <Track key={track.index} {...track} />  
-        ))}
-          </tbody>
-      </table>
-    </div>
+    <div className="card">
+      <img src={props.coverUrl} className="cardImg" alt={props.title} style={{ height: 375}} />
+      <div className="card-body">
+        <h5 className="card">{props.title}</h5>
+        <p className="card">
+          {props.band} &bull; {props.releaseYear} &bull; {props.genre}
+        </p>
+        {props.tracks.length == 0 ? (
+          <div className="alert">Brak utworów</div>
+        ) : (
+          <table className="table table-striped">
+             <thead>
+               <tr>
+                <th>L.p.</th>
+                <th>Tytuł</th>
+                <th className="text-end">Czas trwania</th>
+               </tr>
+            </thead>
+             <tbody>
+              {props.tracks.map((track) => (
+              <Track key={track.index} {...track} />
+              ))}
+           </tbody>
+          </table>
+        )}
+      </div>
+     </div>
   );
 }
 
@@ -251,7 +254,7 @@ function Album(props: AlbumProps) {
 
 
 function App() {
- 
+  
   // return (
   //   <div>
   //     <h1>Filmy</h1>
@@ -275,7 +278,7 @@ function App() {
 
      
   //zadanie 3 i 4 i 5 i 6
-
+    
     const [isMovieOpen, setIsMovieOpen] = useState(true);
     const [isBooksOpen, setIsBooksOpen] = useState(true);
     const [isAlbumsOpen, setIsAlbumsOpen] = useState(true);
@@ -284,6 +287,7 @@ function App() {
     const AlbumTab2 = [...AlbumTab].sort(
       (b, a) => a.tracks.length - b.tracks.length).slice(0, 1);//najwicej utworow
     return(
+      <div className="container">
       <div>
        <h1 onClick={() => setIsMovieOpen(!isMovieOpen)} style={{ cursor: "pointer", userSelect: "none" }}>{isMovieOpen ? "▾" : "▸"} Filmy po 2010</h1>
             {isMovieOpen && (
@@ -312,6 +316,7 @@ function App() {
           ))}
          </div>
           )}
+       </div>
        </div>
     )
   
