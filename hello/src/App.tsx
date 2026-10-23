@@ -40,14 +40,24 @@ function Movie(props: MovieProps) {
     <div className="card">
       <img src={props.posterUrl} className="cardImg" alt={props.title} style={{ height: 375 }} />
       <div className="card-body">
-        <h5 className="card">{props.title}</h5>
+        <h5 className="card" onClick={() => Title(props)}>{props.title}</h5>
         <p className="card">Rok: {props.releaseYear}</p>
         <p className="card">
            Ocena: {props.rating} {props.rating >= 8 && <span className="polecany">Polecany</span>}
         </p>
+        <button onClick={() => Sczegoly(props)} >Pokaż szczegóły</button>
       </div>
     </div>
   );
+}
+
+function Title(props){
+  console.log(`wybrales film ${props.title}`);
+}
+
+
+function Sczegoly(props){
+  console.log(`klikołęś ten film ${props.title}`)
 }
 
 interface BookProps {
@@ -115,13 +125,14 @@ interface TrackProps {
 
 function Track(props: TrackProps) {
   return (
-    <tr>
+    <tr >
       <td>{props.index}</td>
       <td>{props.title}</td>
       <td>{props.length}</td>
     </tr>
   );
 }
+
 
 interface AlbumProps {
   id:number;
@@ -215,6 +226,9 @@ const AlbumTab: AlbumProps[] = [
   }
 ];
 
+//handleSongClick(props.title){|
+
+//}
 function Album(props: AlbumProps) {
   return (
     <div className="card">
@@ -235,9 +249,9 @@ function Album(props: AlbumProps) {
                 <th className="text-end">Czas trwania</th>
                </tr>
             </thead>
-             <tbody>
+             <tbody >
               {props.tracks.map((track) => (
-              <Track key={track.index} {...track} />
+              <Track   key={track.index} {...track} />
               ))}
            </tbody>
           </table>
