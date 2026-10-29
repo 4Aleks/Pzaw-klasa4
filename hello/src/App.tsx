@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css"
 
+
 interface MovieProps {
   id: number;
   posterUrl: string;
@@ -118,6 +119,7 @@ interface TrackProps {
   index: number;
   title: string;
   length: string;
+  onClick?: () => void;
 }
 
 
@@ -125,13 +127,17 @@ interface TrackProps {
 
 function Track(props: TrackProps) {
   return (
-    <tr >
+    <tr  onClick={props.onClick} >
       <td>{props.index}</td>
       <td>{props.title}</td>
       <td>{props.length}</td>
     </tr>
   );
 }
+
+
+
+
 
 
 interface AlbumProps {
@@ -226,10 +232,12 @@ const AlbumTab: AlbumProps[] = [
   }
 ];
 
-//handleSongClick(props.title){|
 
-//}
 function Album(props: AlbumProps) {
+
+  function handleSongClick(trackProps: TrackProps){
+  console.log(`Wybrano utwór ${trackProps.title} z albumu ${props.title}`)
+}
   return (
     <div className="card">
       <img src={props.coverUrl} className="cardImg" alt={props.title} style={{ height: 375}} />
@@ -251,7 +259,7 @@ function Album(props: AlbumProps) {
             </thead>
              <tbody >
               {props.tracks.map((track) => (
-              <Track   key={track.index} {...track} />
+              <Track   key={track.index} {...track} onClick={()=> handleSongClick(track)} />
               ))}
            </tbody>
           </table>
@@ -269,59 +277,78 @@ function Album(props: AlbumProps) {
 
 function App() {
   
-  // return (
-  //   <div>
-  //     <h1>Filmy</h1>
-  //     <div style={{ display: "flex", flexDirection: "row", gap: "10px", justifyContent: "center" }}>
-  //       {MovieTab.map((M)=><Movie {...M}></Movie>)}
-  //       </div>
-
-  //     <h1>Książki</h1>
-  //     <div style={{ display: "flex", flexDirection: "row", gap: "10px", justifyContent: "center" }}>
-  //       {BookTab.map((B)=><Book {...B}></Book>)}
-  //     </div>
-
-  //     <h1>Albumy</h1>
-  //     <div style={{ display: "flex", flexDirection: "row", gap: "10px", justifyContent: "center" }}>
-  //         {AlbumTab.map((album) => (
-  //           <Album key={album.id} {...album} />
-  //         ))}
-  //     </div>
-  //   </div>
-  // );
-
-     
-  //zadanie 3 i 4 i 5 i 6
-    
     const [isMovieOpen, setIsMovieOpen] = useState(true);
     const [isBooksOpen, setIsBooksOpen] = useState(true);
     const [isAlbumsOpen, setIsAlbumsOpen] = useState(true);
+    const [movieSearch, setMovieSearch] = useState("");
+    const [bookSearch, setBookSearch] = useState("");
+    const [albumSearch, setAlbumSearch] = useState("");
     MovieTab.sort((a, b) => a.title.localeCompare(b.title));//sortuje tavblice fimy
     BookTab.sort((a, b) => b.releaseYear -a.releaseYear);//sortuje ksazki
     const AlbumTab2 = [...AlbumTab].sort(
       (b, a) => a.tracks.length - b.tracks.length).slice(0, 1);//najwicej utworow
     return(
       <div className="container">
+
+  
+
       <div>
+               <input
+          id="movie-search"
+          type="text"
+          className="form-control"
+          placeholder="filt"
+          value={movieSearch}
+          onChange={(e) => {
+            console.log(e.target.value);
+            setMovieSearch(e.target.value);
+          }}
+        />
+        <p className="text-capitalize">wpisales {movieSearch}</p>
+        
        <h1 onClick={() => setIsMovieOpen(!isMovieOpen)} style={{ cursor: "pointer", userSelect: "none" }}>{isMovieOpen ? "▾" : "▸"} Filmy po 2010</h1>
             {isMovieOpen && (
         <div style={{ display: "flex", flexDirection: "row", gap: "10px", justifyContent: "center" }}>
-          {MovieTab.filter((M) => M.releaseYear > 2010).map((M) => (
+
+          {MovieTab.filter((M) => M.title.toLowerCase().includes(movieSearch.toLowerCase())).map((M) => (
             <Movie key={M.id} {...M} />
           ))}
         </div>
       )}
 
-          
+<input
+          id="book-search"
+          type="text"
+          className="form-control"
+          placeholder="Wpisz tytuł"
+          value={bookSearch}
+          onChange={(e) => {
+            console.log(e.target.value);
+            setBookSearch(e.target.value);
+          }}
+        /> 
+        <p className="font-weight-light">wpisales {bookSearch}</p>
        <h1 onClick={() => setIsBooksOpen(!isBooksOpen)} style={{ cursor: "pointer", userSelect: "none" }}>{isBooksOpen ? "▾" : "▸"} Książki</h1>
           {isBooksOpen && (
+            
             <div style={{ display: "flex", flexDirection: "row", gap: "10px", justifyContent: "center" }}>
           {BookTab.map((B) => ( <Book key={B.id} {...B} />
           ))}
         </div>
       )}
 
-
+<input
+          id="album-search"
+          type="text"
+          className="form-control"
+          placeholder="Wpisz tytuł"
+          value={albumSearch}
+          onChange={(e) => {
+            console.log(e.target.value);
+            setAlbumSearch(e.target.value);
+          }}
+        />  
+        <p className="font-weight-light">wpisales {albumSearch}</p>
           <h1 onClick={() => setIsAlbumsOpen(!isAlbumsOpen)} style={{ cursor: "pointer", userSelect: "none" }}>{isAlbumsOpen ? "▾" : "▸"} Albumy</h1>
           {isAlbumsOpen && (
             <div style={{ display: "flex", flexDirection: "row", gap: "10px", justifyContent: "center" }}>
