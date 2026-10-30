@@ -287,6 +287,8 @@ function App() {
     BookTab.sort((a, b) => b.releaseYear -a.releaseYear);//sortuje ksazki
     const AlbumTab2 = [...AlbumTab].sort(
       (b, a) => a.tracks.length - b.tracks.length).slice(0, 1);//najwicej utworow
+
+
     return(
       <div className="container">
 
@@ -301,7 +303,7 @@ function App() {
           value={movieSearch}
           onChange={(e) => {
             console.log(e.target.value);
-            setMovieSearch(e.target.value);
+            setMovieSearch(e.target.);
           }}
         />
         <p className="text-capitalize">wpisales {movieSearch}</p>
@@ -364,3 +366,76 @@ function App() {
 }
 
 export default App
+import React from "react";
+import { useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css"
+
+interface ZadanieProps {
+  id: number;
+  status: boolean;
+  title: string;
+  tresc: string;
+}
+
+const ZadanieTab: ZadanieProps[] = [
+  {
+    id: 1,
+    status: true,
+    title: "test",
+    tresc: "okokok",
+  },
+  {
+    id: 2,
+    status: true,
+    title: "test2",
+    tresc: "okokok2",
+  }];
+
+
+
+
+function Lista(props: ListaProps) {
+  return (
+    <div className="card">
+      <ul className="list">
+         <li>
+          <label>
+            <input type="checkbox" id={`${props.id}`} checked={props.status} onChange={(e) => { props.onStatusChange(e.target.checked);
+              }}
+            />
+            <span className="">Zrobione</span>
+          </label>
+        </li>
+        <li>{props.id}</li>
+        <li>Tytuł {props.title}</li>
+        <li>Treść{props.tresc}</li>
+        <li>Status {props.status ? "zrobione" : "nie zrobione"}</li>
+      </ul>
+    </div>
+  );
+}
+
+function App() {
+ 
+  const [zadanieZ, setZadanieZ] = useState<boolean>(false);
+  
+
+  return (
+    <div className="container">
+      <p className="text">Lista Zadań</p>
+      <div>
+        {ZadanieTab.filter((M) => M.status === true).map((M) => (
+          <Lista 
+            key={M.id} 
+            {...M} 
+            onStatusChange={(checked) => setZadanieZ(checked)} 
+          />
+        ))}
+      </div>
+      {}
+      <p className="text-center">ile zrobionych </p>
+    </div>
+  );
+}
+
+export default App;
